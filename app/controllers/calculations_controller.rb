@@ -11,14 +11,22 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.gsub(" ","").gsub("\n", "").gsub("\r", "").length
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text.split.length
+    # "this is a string".split
+    # => ["this", "is", "a", "string"]
 
-    @occurrences = "Replace this string with your answer."
+    downcased_text = @text.downcase
+    no_punctuation = downcased_text.gsub(/[^a-z0-9\s]/i,"")
+    no_linecharacters =no_punctuation.gsub("\n", " ").gsub("\r", " ")
+    word_array = no_linecharacters.split
 
+    answer = word_array.count(@special_word.downcase)
+    @occurrences = answer
+    # console
     # ================================================================================
     # Your code goes above.
     # ================================================================================
@@ -37,8 +45,11 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
-
-    @monthly_payment = "Replace this string with your answer."
+    mr =@apr/12/100
+    nr =(1+mr)**(-@years*12)
+    dm =1-nr
+    numer = mr*@principal
+    @monthly_payment = numer/dm
 
     # ================================================================================
     # Your code goes above.
