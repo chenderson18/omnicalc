@@ -70,13 +70,14 @@ class CalculationsController < ApplicationController
     #   So if you subtract one time from another, you will get an integer
     #   number of seconds as a result.
     # ================================================================================
+    seconds_diff=(@ending - @starting).to_i.abs
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending-@starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
 
     # ================================================================================
     # Your code goes above.
@@ -92,33 +93,37 @@ class CalculationsController < ApplicationController
     # Your code goes below.
     # The numbers the user input are in the array @numbers.
     # ================================================================================
+    array = @numbers
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = array.sort
 
-    @count = "Replace this string with your answer."
+    @count = array.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = array.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = array.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    @median =(@sorted_numbers.at(@count/2)+ @sorted_numbers.at((@count-1)/2))/2
 
-    @sum = "Replace this string with your answer."
+    @sum = array.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @sum/@count
 
-    @variance = "Replace this string with your answer."
+    try=0
+    array.each { |x| try +=(x-@mean)**2  }
+    @variance =  try/array.size
 
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+    @standard_deviation = Math.sqrt(@variance)
+    freq = array.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    @mode = array.max_by { |v| freq[v] }
 
     # ================================================================================
     # Your code goes above.
     # ================================================================================
 
     render("descriptive_statistics.html.erb")
+
   end
 end
